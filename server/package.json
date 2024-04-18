@@ -2,9 +2,9 @@
   "name": "server",
   "version": "0.0.1",
   "description": "Express JS Server for Cross Site Scripting",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.ts"
   },
   "repository": {
     "type": "git",
@@ -13,6 +13,7 @@
   "author": "Keon Oh Kim",
   "license": "MIT",
   "dependencies": {
+    "@types/express": "^4.17.21",
     "express": "^4.19.2"
   },
   "devDependencies": {

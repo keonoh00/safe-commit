@@ -7,7 +7,7 @@ import AnnouncementBoardScreen from "../screens/AnnouncementBoard";
 import LoginScreen from "../screens/Login";
 import HomeScreen from "../screens/Home";
 
-enum PATH {
+export enum PATH {
   HOME = "/",
   CREATE_ACCOUNT = "create-account",
   LOGIN = "login",

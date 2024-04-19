@@ -1,11 +1,14 @@
 import { Button, Flex } from "@chakra-ui/react";
 import React from "react";
+import ScreenBase from "./ScreenBase";
 
 const ResetPasswordScreen: React.FC = () => {
   return (
-    <Flex>
-      <Button onClick={() => {}}>Reset Password</Button>
-    </Flex>
+    <ScreenBase>
+      <Flex>
+        <Button onClick={() => {}}>Reset Password</Button>
+      </Flex>
+    </ScreenBase>
   );
 };
 

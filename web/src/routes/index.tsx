@@ -1,34 +1,44 @@
 import { RouteObject } from "react-router-dom";
-import App from "../App";
+
 import CreateAccountScreen from "../screens/CreateAccount";
 import ResetPasswordScreen from "../screens/ResetPassword";
 import ProfileScreen from "../screens/Profile";
 import AnnouncementBoardScreen from "../screens/AnnouncementBoard";
 import LoginScreen from "../screens/Login";
+import HomeScreen from "../screens/Home";
+
+enum PATH {
+  HOME = "/",
+  CREATE_ACCOUNT = "create-account",
+  LOGIN = "login",
+  RESET_PASSWORD = "reset-password",
+  PROFILE = "profile",
+  BOARD = "board",
+}
 
 export const routes: RouteObject[] = [
   {
-    path: "/",
-    element: <App />,
+    path: PATH.HOME,
+    element: <HomeScreen />,
   },
   {
-    path: "create-account",
+    path: PATH.CREATE_ACCOUNT,
     element: <CreateAccountScreen />,
   },
   {
-    path: "login",
+    path: PATH.LOGIN,
     element: <LoginScreen />,
   },
   {
-    path: "reset-password",
+    path: PATH.RESET_PASSWORD,
     element: <ResetPasswordScreen />,
   },
   {
-    path: "profile",
+    path: PATH.PROFILE,
     element: <ProfileScreen />,
   },
   {
-    path: "board",
+    path: PATH.BOARD,
     element: <AnnouncementBoardScreen />,
   },
 ];

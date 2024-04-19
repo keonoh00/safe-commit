@@ -1,13 +1,15 @@
-import { Box, Button, chakra, Flex, Image } from "@chakra-ui/react";
+import { Flex, Image } from "@chakra-ui/react";
 
-const RouteButton = chakra(Button, {
-  baseStyle: {
-    color: "black",
-    marginRight: "5px",
-  },
-});
+import { useNavigate } from "react-router-dom";
+import IDrawer from "../IDrawer/IDrawer";
 
 export default function IHeader() {
+  const navigate = useNavigate();
+
+  const pushToHome = () => {
+    navigate("/");
+  };
+
   return (
     <Flex
       paddingBlock={6}
@@ -16,21 +18,9 @@ export default function IHeader() {
       alignItems={"center"}
       borderColor={"gray.200"}
     >
-      <Image
-        // src={AssetSelector.logo}
-        alt="logo"
-        aspectRatio={6 / 1}
-        // onClick={pushToHome}
-      />
+      <Image alt="logo" aspectRatio={6 / 1} onClick={pushToHome} />
 
-      <Box>
-        <RouteButton colorScheme={"whiteAlpaka"} onClick={() => {}}>
-          Home
-        </RouteButton>
-        <RouteButton colorScheme={"whiteAlpaka"} onClick={() => {}}>
-          Demo
-        </RouteButton>
-      </Box>
+      <IDrawer />
     </Flex>
   );
 }

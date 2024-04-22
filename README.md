@@ -1,2 +1,3 @@
-# safe-commit
-Repository for open source demo containing single vulnerable commit
+# web-vuln
+
+Repository for the Web Vulnerability Demonstration

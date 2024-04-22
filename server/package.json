@@ -13,6 +13,8 @@
   "author": "Keon Oh Kim",
   "license": "MIT",
   "dependencies": {
+    "@typescript-eslint/eslint-plugin": "^7.7.0",
+    "@typescript-eslint/parser": "^7.7.0",
     "express": "^4.19.2",
     "express-session": "^1.18.0",
     "nodemon": "^3.1.0",
@@ -22,6 +24,7 @@
     "@types/express": "^4.17.21",
     "@types/express-session": "^1.18.0",
     "@types/node": "^20.12.7",
+    "eslint": "^8.56.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.5"
   }

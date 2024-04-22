@@ -1,45 +1,51 @@
 import { Application } from "express";
+import { IRequest } from "./types/session";
 
 const bodyParser = require("body-parser");
 const path = require("path");
 
 export const urlHandler = (app: Application) => {
-  app.get("/", (req, res) => {
+  app.get("/", (req: IRequest, res) => {
     if (req.session.loggedIn) res.redirect("/dashboard");
     else res.sendFile("home.html", { root: path.join(__dirname, "public") });
   });
 
-  app.get("/dashboard", (req, res) => {
+  app.get("/dashboard", (req: IRequest, res) => {
     if (req.session.loggedIn) {
       res.setHeader("Content-Type", "text/html");
       res.write("Welcome " + req.session.username + " to your dashboard");
       res.write('<a href="/logout">Logout</a>');
       res.end();
-    } else res.redirect("/login");
+    } else {
+      res.redirect("/login");
+    }
   });
 
-  app.get("/login", (req, res) => {
+  app.get("/login", (req: IRequest, res) => {
     res.sendFile("login.html", { root: path.join(__dirname, "public") });
   });
 
   app.post(
     "/authenticate",
     bodyParser.urlencoded(),
-    (req, res, next) => {
+    (req: IRequest, res, next) => {
       // Actual implementation would check values in a database
       if (req.body.username == "foo" && req.body.password == "bar") {
         res.locals.username = req.body.username;
         next();
-      } else res.sendStatus(401);
+      } else {
+        res.sendStatus(401);
+      }
     },
-    (req, res) => {
+    (req: IRequest, res) => {
       req.session.loggedIn = true;
       req.session.username = res.locals.username;
       console.log(req.session);
       res.redirect("/dashboard");
     }
   );
-  app.get("/logout", (req, res) => {
+
+  app.get("/logout", (req: IRequest, res) => {
     req.session.destroy((err) => {});
     res.send("Thank you! Visit again");
   });

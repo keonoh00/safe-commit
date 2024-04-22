@@ -9,11 +9,11 @@ import HomeScreen from "../screens/Home";
 
 export enum PATH {
   HOME = "/",
-  CREATE_ACCOUNT = "create-account",
-  LOGIN = "login",
-  RESET_PASSWORD = "reset-password",
-  PROFILE = "profile",
-  BOARD = "board",
+  CREATE_ACCOUNT = "/create-account",
+  LOGIN = "/login",
+  RESET_PASSWORD = "/reset-password",
+  PROFILE = "/profile",
+  BOARD = "/board",
 }
 
 export const routes: RouteObject[] = [

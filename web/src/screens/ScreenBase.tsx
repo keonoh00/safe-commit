@@ -7,7 +7,7 @@ interface ScreenBaseProps {
 
 const ScreenBase: React.FC<ScreenBaseProps> = ({ children }) => {
   return (
-    <Flex flexDirection={"column"}>
+    <Flex flexDirection={"column"} paddingInline={12}>
       <IHeader />
       {children}
     </Flex>

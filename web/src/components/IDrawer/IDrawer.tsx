@@ -15,9 +15,10 @@ import React from "react";
 export interface IDrawerProps {
   children?: React.ReactNode;
   title?: string;
+  footer?: React.ReactNode;
 }
 
-const IDrawer = ({ title, children }: IDrawerProps) => {
+const IDrawer = ({ title, children, footer }: IDrawerProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = React.useRef();
 
@@ -27,6 +28,7 @@ const IDrawer = ({ title, children }: IDrawerProps) => {
         ref={btnRef.current}
         colorScheme={"whiteAlphaka"}
         onClick={onOpen}
+        padding={0}
       >
         <HamburgerIcon w={8} h={8} color={"black"} />
       </Button>
@@ -39,16 +41,11 @@ const IDrawer = ({ title, children }: IDrawerProps) => {
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
-          {title ? <DrawerHeader>{title}</DrawerHeader> : null}
+          <DrawerHeader>{title || ""}</DrawerHeader>
 
           <DrawerBody>{children}</DrawerBody>
 
-          <DrawerFooter>
-            <Button variant="outline" mr={3} onClick={onClose}>
-              Cancel
-            </Button>
-            <Button colorScheme="blue">Save</Button>
-          </DrawerFooter>
+          <DrawerFooter>{footer}</DrawerFooter>
         </DrawerContent>
       </Drawer>
     </>

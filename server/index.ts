@@ -1,15 +1,11 @@
-import * as express from "express";
-import { Request, Response } from "express";
-
-// create and setup express app
+const express = require("express");
 const app = express();
-app.use(express.json());
+const port = 3001;
 
-// register routes
-
-app.get("/", function (req: Request, res: Response) {
-  // here we will have logic to return all users
+app.get("/", (req, res) => {
+  res.send("This is the server response!");
 });
 
-// start express server
-app.listen(3000);
+app.listen(port, () => {
+  console.log(`Example app listening on port ${port}`);
+});

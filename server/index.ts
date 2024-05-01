@@ -1,10 +1,7 @@
-const session = require("express-session");
-const express = require("express");
+import session from "express-session";
+import express, { Application } from "express";
 
-import { Application } from "express";
-import { urlHandler } from "./src/app";
-
-let app: Application = express();
+const app: Application = express();
 const port: number = 3001;
 
 app.use(
@@ -13,7 +10,7 @@ app.use(
     resave: false,
     saveUninitialized: true,
     cookie: { secure: true },
-  })
+  }),
 );
 
 app.get("/", (req, res) => {
@@ -26,12 +23,10 @@ app.use(
     secret: "Keep it secret",
     name: "uniqueSessionID",
     saveUninitialized: false,
-  })
+  }),
 );
 
-// Handle URLs
-app = urlHandler(app);
-
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
+  // eslint-disable-next-line no-console
+  console.log(`🚀 Server running on port ${port}`);
 });

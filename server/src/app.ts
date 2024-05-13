@@ -1,10 +1,10 @@
 import { Application } from "express";
+
 import { IRequest } from "./types/session";
+import bodyParser from "body-parser";
+import path from "path";
 
-const bodyParser = require("body-parser");
-const path = require("path");
-
-export const urlHandler = (app: Application) => {
+export default function urlHandler(app: Application) {
   app.get("/", (req: IRequest, res) => {
     if (req.session.loggedIn) res.redirect("/dashboard");
     else res.sendFile("home.html", { root: path.join(__dirname, "public") });
@@ -13,7 +13,7 @@ export const urlHandler = (app: Application) => {
   app.get("/dashboard", (req: IRequest, res) => {
     if (req.session.loggedIn) {
       res.setHeader("Content-Type", "text/html");
-      res.write("Welcome " + req.session.username + " to your dashboard");
+      res.write(`Welcome ${req.session.username} to your dashboard`);
       res.write('<a href="/logout">Logout</a>');
       res.end();
     } else {
@@ -30,7 +30,7 @@ export const urlHandler = (app: Application) => {
     bodyParser.urlencoded(),
     (req: IRequest, res, next) => {
       // Actual implementation would check values in a database
-      if (req.body.username == "foo" && req.body.password == "bar") {
+      if (req.body.username === "foo" && req.body.password === "bar") {
         res.locals.username = req.body.username;
         next();
       } else {
@@ -42,13 +42,13 @@ export const urlHandler = (app: Application) => {
       req.session.username = res.locals.username;
       console.log(req.session);
       res.redirect("/dashboard");
-    }
+    },
   );
 
   app.get("/logout", (req: IRequest, res) => {
-    req.session.destroy((err) => {});
+    req.session.destroy(() => {});
     res.send("Thank you! Visit again");
   });
 
   return app;
-};
+}

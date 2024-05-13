@@ -1,10 +1,7 @@
-import { AuthRequest } from "./types/session";
+import { IRequest } from "../types/session";
+import { Response } from "express";
 
-export const requireAuth = (
-  req: AuthRequest,
-  res: Response,
-  next: () => void
-) => {
+export const requireAuth = (req: IRequest, res: Response, next: () => void) => {
   if (req.session.userId) {
     next(); // User is authenticated, continue to next middleware
   } else {

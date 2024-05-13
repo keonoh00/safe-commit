@@ -1,32 +1,23 @@
-import session from "express-session";
+import cors from "cors";
 import express, { Application } from "express";
+import session from "express-session";
 
 const app: Application = express();
 const port: number = 3001;
-
-app.use(
-  session({
-    secret: "my-secret-key",
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: true },
-  }),
-);
+const sessionOptions = {
+  secret: "my-secret-key",
+  resave: true,
+  saveUninitialized: true,
+};
 
 app.get("/", (req, res) => {
   res.send("This is the server response!");
 });
 
 // Middleware
-app.use(
-  session({
-    secret: "Keep it secret",
-    name: "uniqueSessionID",
-    saveUninitialized: false,
-  }),
-);
+app.use(cors());
+app.use(session(sessionOptions));
 
 app.listen(port, () => {
-  // eslint-disable-next-line no-console
   console.log(`🚀 Server running on port ${port}`);
 });

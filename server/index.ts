@@ -10,13 +10,19 @@ const sessionOptions = {
   saveUninitialized: true,
 };
 
-app.get("/", (req, res) => {
-  res.send("This is the server response!");
-});
-
 // Middleware
-app.use(cors());
 app.use(session(sessionOptions));
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  }),
+);
+
+app.get("/", (req, res) => {
+  console.log("GET /");
+  res.send({ msg: "This is CORS-enabled for a Single Route" });
+});
 
 app.listen(port, () => {
   console.log(`🚀 Server running on port ${port}`);

@@ -4,7 +4,7 @@
   "description": "Express JS Server for Cross Site Scripting",
   "main": "index.ts",
   "scripts": {
-    "start": "nodemon - exec 'ts-node' src/app.ts",
+    "start": "nodemon - exec 'ts-node' .",
     "lint": "eslint src --ext .ts",
     "lint:fix": "npm run lint -- --fix"
   },

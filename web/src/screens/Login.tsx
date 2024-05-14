@@ -1,32 +1,30 @@
 import { Flex, useToast } from "@chakra-ui/react";
-import React, { useEffect } from "react";
+import React from "react";
 import ScreenBase from "./ScreenBase";
-import { useNavigate } from "react-router-dom";
-import ISkeleton from "../components/ISkeleton/ISkeleton";
+
 import IForm from "../components/IForm/IForm";
 import { requestLogin } from "../api/auth";
+import { useNavigate } from "react-router-dom";
 
 const LoginScreen: React.FC = () => {
   const toast = useToast();
-  const [isPrerequisiteChecked, setIsPrerequisiteChecked] =
-    React.useState(false);
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
   const navigate = useNavigate();
 
-  useEffect(() => {
-    // TODO: Check if user is logged in
-    const isLoggedIn = false;
-    if (isLoggedIn) {
-      navigate("/");
-    }
-    setIsPrerequisiteChecked(true);
-  }, [isPrerequisiteChecked, navigate]);
-
   const onLoginPress = async () => {
     try {
-      await requestLogin({ username, password });
-      navigate("/");
+      const data = await requestLogin({ username, password });
+      if (data) {
+        toast({
+          title: "Success",
+          description: "Login successful",
+          status: "success",
+          duration: 5000,
+          isClosable: true,
+        });
+        navigate("/");
+      }
     } catch (error) {
       toast({
         title: "Error",
@@ -40,29 +38,25 @@ const LoginScreen: React.FC = () => {
 
   return (
     <ScreenBase>
-      {isPrerequisiteChecked ? (
-        <Flex justifyContent={"center"} alignItems={"center"}>
-          <IForm
-            title={"Login"}
-            inputs={[
-              {
-                placeholder: "Username",
-                value: username,
-                onChange: (event) => setUsername(event.target.value),
-              },
-              {
-                placeholder: "Password",
-                value: password,
-                onChange: (event) => setPassword(event.target.value),
-              },
-            ]}
-            buttonText={"Login"}
-            onSubmit={onLoginPress}
-          />
-        </Flex>
-      ) : (
-        <ISkeleton />
-      )}
+      <Flex justifyContent={"center"} alignItems={"center"}>
+        <IForm
+          title={"Login"}
+          inputs={[
+            {
+              placeholder: "Username",
+              value: username,
+              onChange: (event) => setUsername(event.target.value),
+            },
+            {
+              placeholder: "Password",
+              value: password,
+              onChange: (event) => setPassword(event.target.value),
+            },
+          ]}
+          buttonText={"Login"}
+          onSubmit={onLoginPress}
+        />
+      </Flex>
     </ScreenBase>
   );
 };

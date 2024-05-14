@@ -1,7 +1,6 @@
+import { IRequest } from "../types/session";
+import { checkUserDB } from "../functions/auth";
 import express, { Response } from "express";
-
-import { IRequest } from "./types/session";
-import { checkUserDB } from "./functions/auth/auth";
 
 const authRouter = express.Router();
 

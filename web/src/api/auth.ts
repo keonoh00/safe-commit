@@ -31,3 +31,28 @@ export const requestLogin = async ({
     throw new Error("Invalid username or password");
   }
 };
+
+export const createAccountRequest = async ({
+  name,
+  username,
+  password,
+}: {
+  name: string;
+  username: string;
+  password: string;
+}) => {
+  const response = await axiosInstance.post("/auth/create-account", {
+    name,
+    username,
+    password,
+  });
+
+  if (response.data.username === username) {
+    store.dispatch(changeAuthState(AuthState.AUTHENTICATED));
+    store.dispatch(onChangeUsername(username));
+
+    return response.data;
+  } else {
+    throw new Error("Failed to create account");
+  }
+};

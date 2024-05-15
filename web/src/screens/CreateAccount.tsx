@@ -1,25 +1,42 @@
-import { Flex } from "@chakra-ui/react";
+import { Flex, useToast } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 import ScreenBase from "./ScreenBase";
 import { useNavigate } from "react-router-dom";
 import ISkeleton from "../components/ISkeleton/ISkeleton";
 import IForm from "../components/IForm/IForm";
+import { useSelector } from "react-redux";
+import { RootState } from "../store";
+import { AuthState } from "../store/authStore";
 
 const CreateAccountScreen: React.FC = () => {
   const [isPrerequisiteChecked, setIsPrerequisiteChecked] =
     React.useState(false);
-  const [id, setId] = React.useState("");
+  const [name, setName] = React.useState("");
+  const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
   const navigate = useNavigate();
+  const authStore = useSelector((state: RootState) => state.auth);
+  const toast = useToast();
 
   useEffect(() => {
-    // TODO: Check if user is logged in
-    const isLoggedIn = false;
+    const isLoggedIn = authStore.authState === AuthState.AUTHENTICATED;
     if (isLoggedIn) {
-      navigate("/");
+      if (!toast.isActive) {
+        toast({
+          title: "Error",
+          description: "You are already logged in",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+      }
+      // Go back to previous page
+      navigate(-1);
     }
     setIsPrerequisiteChecked(true);
-  }, [isPrerequisiteChecked, navigate]);
+  }, [authStore.authState, isPrerequisiteChecked, navigate, toast]);
+
+  const onCreateAccountPress = async () => {};
 
   return (
     <ScreenBase>
@@ -29,9 +46,14 @@ const CreateAccountScreen: React.FC = () => {
             title={"Create your account!"}
             inputs={[
               {
-                placeholder: "ID",
-                value: id,
-                onChange: (event) => setId(event.target.value),
+                placeholder: "Name",
+                value: name,
+                onChange: (event) => setName(event.target.value),
+              },
+              {
+                placeholder: "Username",
+                value: username,
+                onChange: (event) => setUsername(event.target.value),
               },
               {
                 placeholder: "Password",
@@ -40,7 +62,7 @@ const CreateAccountScreen: React.FC = () => {
               },
             ]}
             buttonText={"Create Account"}
-            onSubmit={() => {}}
+            onSubmit={onCreateAccountPress}
           />
         </Flex>
       ) : (

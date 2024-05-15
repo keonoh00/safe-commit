@@ -21,9 +21,6 @@ export const counterSlice = createSlice({
   initialState,
   reducers: {
     changeAuthState: (state, action: PayloadAction<AuthState>) => {
-      if (state.authState === action.payload) {
-        return;
-      }
       state.authState = action.payload;
     },
     onChangeUsername: (state, action: PayloadAction<string>) => {

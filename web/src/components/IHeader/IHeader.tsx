@@ -6,10 +6,9 @@ import { ASSETS } from "../../assets";
 import { PATH } from "../../routes";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
-import { AuthState } from "../../store/reducer/authReducer";
 
 export default function IHeader() {
-  const authStore = useSelector((state: RootState) => state.auth);
+  const authState = useSelector((state: RootState) => state.authState);
   const navigate = useNavigate();
 
   const pushToHome = () => {
@@ -38,9 +37,8 @@ export default function IHeader() {
       />
 
       <Flex alignItems={"center"}>
-        {authStore.authState === AuthState.AUTHENTICATED &&
-        authStore.username ? (
-          <Avatar mr={2} size={"sm"} name={authStore.username} />
+        {authState.isAuthenticated && authState.username ? (
+          <Avatar mr={2} size={"sm"} name={authState.username} />
         ) : (
           <>
             <Button

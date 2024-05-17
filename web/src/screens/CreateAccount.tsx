@@ -6,7 +6,6 @@ import ISkeleton from "../components/ISkeleton/ISkeleton";
 import IForm from "../components/IForm/IForm";
 import { useSelector } from "react-redux";
 
-import { AuthState } from "../store/reducer/authReducer";
 import { RootState } from "../store";
 
 const CreateAccountScreen: React.FC = () => {
@@ -16,12 +15,11 @@ const CreateAccountScreen: React.FC = () => {
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
   const navigate = useNavigate();
-  const authStore = useSelector((state: RootState) => state.auth);
+  const authState = useSelector((state: RootState) => state.authState);
   const toast = useToast();
 
   useEffect(() => {
-    const isLoggedIn = authStore.authState === AuthState.AUTHENTICATED;
-    if (isLoggedIn) {
+    if (authState.isAuthenticated) {
       if (!toast.isActive) {
         toast({
           title: "Error",
@@ -35,7 +33,7 @@ const CreateAccountScreen: React.FC = () => {
       navigate(-1);
     }
     setIsPrerequisiteChecked(true);
-  }, [authStore.authState, isPrerequisiteChecked, navigate, toast]);
+  }, [authState.isAuthenticated, isPrerequisiteChecked, navigate, toast]);
 
   const onCreateAccountPress = async () => {};
 

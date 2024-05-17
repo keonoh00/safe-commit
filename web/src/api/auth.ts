@@ -1,7 +1,6 @@
 import { store } from "../store";
 import {
-  AuthState,
-  changeAuthState,
+  onChangeIsAuthenticated,
   onChangeUsername,
 } from "../store/reducer/authReducer";
 
@@ -23,7 +22,7 @@ export const requestLogin = async ({
 
   if (response.status === 200 && response.data.username === username) {
     if (updateState) {
-      store.dispatch(changeAuthState(AuthState.AUTHENTICATED));
+      store.dispatch(onChangeIsAuthenticated(true));
       store.dispatch(onChangeUsername(username));
     }
 
@@ -49,7 +48,7 @@ export const createAccountRequest = async ({
   });
 
   if (response.data.username === username) {
-    store.dispatch(changeAuthState(AuthState.AUTHENTICATED));
+    store.dispatch(onChangeIsAuthenticated(true));
     store.dispatch(onChangeUsername(username));
 
     return response.data;

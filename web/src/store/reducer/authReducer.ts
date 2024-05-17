@@ -1,18 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
-export enum AuthState {
-  UNAUTHENTICATED = "UNAUTHENTICATED",
-  AUTHENTICATED = "AUTHENTICATED",
-}
-
 export interface AuthStoreState {
-  authState: AuthState;
+  isAuthenticated: boolean;
   username: string | null;
 }
 
 const initialState: AuthStoreState = {
-  authState: AuthState.UNAUTHENTICATED,
+  isAuthenticated: false,
   username: null,
 };
 
@@ -20,8 +15,8 @@ export const counterSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    changeAuthState: (state, action: PayloadAction<AuthState>) => {
-      state.authState = action.payload;
+    onChangeIsAuthenticated: (state, action: PayloadAction<boolean>) => {
+      state.isAuthenticated = action.payload;
     },
     onChangeUsername: (state, action: PayloadAction<string>) => {
       state.username = action.payload;
@@ -30,6 +25,7 @@ export const counterSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { changeAuthState, onChangeUsername } = counterSlice.actions;
+export const { onChangeIsAuthenticated, onChangeUsername } =
+  counterSlice.actions;
 
 export default counterSlice.reducer;

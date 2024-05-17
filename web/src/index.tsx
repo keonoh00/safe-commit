@@ -7,7 +7,9 @@ import { routes } from "./routes";
 import { ChakraProvider } from "@chakra-ui/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Provider } from "react-redux";
-import { store } from "./store";
+
+import { PersistGate } from "redux-persist/integration/react";
+import { persistor, store } from "./store";
 
 const router = createBrowserRouter(routes);
 
@@ -20,11 +22,13 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <QueryClientProvider client={queryClient}>
-        <ChakraProvider>
-          <RouterProvider router={router} />
-        </ChakraProvider>
-      </QueryClientProvider>
+      <PersistGate loading={null} persistor={persistor}>
+        <QueryClientProvider client={queryClient}>
+          <ChakraProvider>
+            <RouterProvider router={router} />
+          </ChakraProvider>
+        </QueryClientProvider>
+      </PersistGate>
     </Provider>
   </React.StrictMode>
 );

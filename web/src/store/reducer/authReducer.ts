@@ -17,7 +17,7 @@ const initialState: AuthStoreState = {
 };
 
 export const counterSlice = createSlice({
-  name: "authStore",
+  name: "auth",
   initialState,
   reducers: {
     changeAuthState: (state, action: PayloadAction<AuthState>) => {

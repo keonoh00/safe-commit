@@ -3,7 +3,8 @@ import {
   AuthState,
   changeAuthState,
   onChangeUsername,
-} from "../store/authStore";
+} from "../store/reducer/authReducer";
+
 import axiosInstance from "./axios";
 
 export const requestLogin = async ({

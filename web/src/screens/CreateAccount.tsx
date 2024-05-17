@@ -5,8 +5,9 @@ import { useNavigate } from "react-router-dom";
 import ISkeleton from "../components/ISkeleton/ISkeleton";
 import IForm from "../components/IForm/IForm";
 import { useSelector } from "react-redux";
+
+import { AuthState } from "../store/reducer/authReducer";
 import { RootState } from "../store";
-import { AuthState } from "../store/authStore";
 
 const CreateAccountScreen: React.FC = () => {
   const [isPrerequisiteChecked, setIsPrerequisiteChecked] =

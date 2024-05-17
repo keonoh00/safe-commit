@@ -6,7 +6,7 @@ import { ASSETS } from "../../assets";
 import { PATH } from "../../routes";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
-import { AuthState } from "../../store/authStore";
+import { AuthState } from "../../store/reducer/authReducer";
 
 export default function IHeader() {
   const authStore = useSelector((state: RootState) => state.auth);

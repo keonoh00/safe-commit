@@ -1,13 +1,33 @@
-import { configureStore } from "@reduxjs/toolkit";
-import authReducer from "./authStore";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
 
-export const store = configureStore({
-  reducer: {
-    auth: authReducer,
-  },
+import { persistReducer, persistStore } from "redux-persist";
+import authReducer from "./reducer/authReducer";
+import sessionStorage from "redux-persist/es/storage/session";
+
+const persistConfig = {
+  key: "root",
+  storage: sessionStorage,
+  whitelist: ["auth"],
+};
+
+const rootReducer = combineReducers({
+  auth: authReducer,
 });
 
-// Infer the `RootState` and `AppDispatch` types from the store itself
-export type RootState = ReturnType<typeof store.getState>;
-// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
+const persistedReducer = persistReducer<ReturnType<typeof rootReducer>>(
+  persistConfig,
+  rootReducer
+);
+
+export const store = configureStore({
+  reducer: persistedReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
+});
+
+export const persistor = persistStore(store);
+
 export type AppDispatch = typeof store.dispatch;
+export type RootState = ReturnType<typeof store.getState>;

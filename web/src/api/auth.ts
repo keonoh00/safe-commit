@@ -1,6 +1,7 @@
 import { store } from "../store";
 import {
   onChangeIsAuthenticated,
+  onChangeHashedPassword,
   onChangeUsername,
 } from "../store/reducer/authReducer";
 
@@ -50,6 +51,7 @@ export const createAccountRequest = async ({
   if (response.data.username === username) {
     store.dispatch(onChangeIsAuthenticated(true));
     store.dispatch(onChangeUsername(username));
+    store.dispatch(onChangeHashedPassword(response.data.hashedPassword)); // Server returns hashed password
 
     return response.data;
   } else {

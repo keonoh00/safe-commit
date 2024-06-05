@@ -4,16 +4,17 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import express, { Application } from "express";
 import session, { SessionOptions } from "express-session";
+import testRouter from "./routers/test";
 
 class Server {
   private app: Application;
   private port: number;
-  private db: Database;
+  private db: typeof Database;
   private sessionOptions: SessionOptions;
 
   constructor() {
     this.app = express();
-    // this.db = new Database();
+    this.db = Database; // For initializing
     this.port = 3001;
     this.sessionOptions = {
       secret: "my-secret-key",
@@ -39,6 +40,7 @@ class Server {
 
   private routes() {
     this.app.use("/api/v1/auth", authRouter);
+    this.app.use("/api/v1/test", testRouter);
   }
 
   public start() {

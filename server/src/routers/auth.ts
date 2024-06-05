@@ -22,7 +22,8 @@ authRouter.post("/login", async (req: IRequest, res: Response) => {
       console.log("Creating new session");
       // Validate using DB
       const user = await checkUserDB(req.body.username, req.body.password);
-      if (user !== undefined) {
+      console.log("user: ", user);
+      if (user !== undefined && user.length > 0) {
         req.session.username = req.body.username;
         req.session.isValid = true;
         res.json({

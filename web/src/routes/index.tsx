@@ -3,7 +3,7 @@ import { RouteObject } from "react-router-dom";
 import CreateAccountScreen from "../screens/CreateAccount";
 import ResetPasswordScreen from "../screens/ResetPassword";
 import ProfileScreen from "../screens/Profile";
-import AnnouncementBoardScreen from "../screens/AnnouncementBoard";
+import BoardScreen from "../screens/Board";
 import LoginScreen from "../screens/Login";
 import HomeScreen from "../screens/Home";
 
@@ -39,6 +39,6 @@ export const routes: RouteObject[] = [
   },
   {
     path: PATH.BOARD,
-    element: <AnnouncementBoardScreen />,
+    element: <BoardScreen />,
   },
 ];

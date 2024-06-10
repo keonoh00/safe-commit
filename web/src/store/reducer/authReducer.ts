@@ -13,7 +13,7 @@ const initialState: AuthStoreState = {
   hashedPassword: null,
 };
 
-export const counterSlice = createSlice({
+export const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
@@ -34,6 +34,6 @@ export const {
   onChangeIsAuthenticated,
   onChangeUsername,
   onChangeHashedPassword,
-} = counterSlice.actions;
+} = authSlice.actions;
 
-export default counterSlice.reducer;
+export default authSlice.reducer;

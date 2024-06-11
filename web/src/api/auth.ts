@@ -10,26 +10,35 @@ import axiosInstance from "./axios";
 export const requestLogin = async ({
   username,
   password,
-  updateState = true,
 }: {
   username: string;
   password: string;
-  updateState?: boolean;
 }) => {
   const response = await axiosInstance.post("/auth/login", {
     username,
     password,
   });
 
-  if (response.status === 200 && response.data.username === username) {
-    if (updateState) {
-      store.dispatch(onChangeIsAuthenticated(true));
-      store.dispatch(onChangeUsername(username));
-    }
+  if (response.data.username && response.data.hashedPassword) {
+    store.dispatch(onChangeIsAuthenticated(true));
+    store.dispatch(onChangeUsername(username));
+    store.dispatch(onChangeHashedPassword(response.data.hashedPassword));
 
     return response.data;
   } else {
-    throw new Error("Invalid username or password");
+    throw new Error(response.data.message);
+  }
+};
+
+export const requestLogout = async () => {
+  const response = await axiosInstance.get("/auth/logout");
+
+  if (response.data.message === "Logged out") {
+    store.dispatch(onChangeIsAuthenticated(false));
+    store.dispatch(onChangeUsername(""));
+    store.dispatch(onChangeHashedPassword(""));
+  } else {
+    throw new Error("Failed to logout");
   }
 };
 

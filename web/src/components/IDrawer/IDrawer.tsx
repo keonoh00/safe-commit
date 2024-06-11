@@ -8,7 +8,6 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
-  useDisclosure,
 } from "@chakra-ui/react";
 import React from "react";
 
@@ -16,10 +15,19 @@ export interface IDrawerProps {
   children?: React.ReactNode;
   title?: string;
   footer?: React.ReactNode;
+  isOpen: boolean;
+  onOpen: () => void;
+  onClose: () => void;
 }
 
-const IDrawer = ({ title, children, footer }: IDrawerProps) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+const IDrawer = ({
+  title,
+  children,
+  footer,
+  isOpen,
+  onOpen,
+  onClose,
+}: IDrawerProps) => {
   const btnRef = React.useRef();
 
   return (

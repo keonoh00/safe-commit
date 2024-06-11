@@ -13,30 +13,31 @@ authRouter.post("/login", async (req: IRequest, res: Response) => {
 
     if (req.session.username && req.session.hashedPassword) {
       if (await authenticateUser(req.session.username, req.session.hashedPassword)) {
-        res.send({ message: "Already logged in" });
+        res.send({ username: req.body.username, hashedPassword: req.session.hashedPassword });
       }
     }
 
     const hashedUserInputPassword = hashPassword(req.body.password);
+    console.log("Logging in", req.body);
     const isAuthenticated = await authenticateUser(req.body.username, hashedUserInputPassword);
 
     if (isAuthenticated) {
-      // Set the session data
       req.session.username = req.body.username;
-      req.session.hashedPassword = req.body.hashedUserInputPassword;
-      res.send({ message: "Logged in" });
+      req.session.hashedPassword = hashedUserInputPassword;
+      res.send({ username: req.body.username, hashedPassword: hashedUserInputPassword });
     } else {
       res.send({ message: "Invalid username or password" });
     }
   } catch (error) {
-    res.sendStatus(500);
+    console.log(error);
+    res.send({ message: error });
   }
 });
 
 authRouter.get("/logout", (req: IRequest, res: Response) => {
   try {
-    req.session.destroy(() => {});
-    res.send({ message: "Logged out" });
+    console.log("Logging out");
+    req.session.destroy(() => res.send({ message: "Logged out" }));
   } catch (error) {
     res.send(error);
   }

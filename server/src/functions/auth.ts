@@ -12,10 +12,10 @@ export const getUserByUsername: (username: string) => Promise<User[]> = async (
 
 export const authenticateUser = async (username: string, hashedPassword: string) => {
   const user = await getUserByUsername(username);
-  const storedHashedPassword = user[0].password;
   if (user.length === 0) {
     return false;
   }
+  const storedHashedPassword = user[0].password;
   return storedHashedPassword === hashedPassword;
 };
 

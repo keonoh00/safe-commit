@@ -1,12 +1,15 @@
 import { Flex, useToast } from "@chakra-ui/react";
-import React from "react";
+import React, { useEffect } from "react";
 import ScreenBase from "./ScreenBase";
 
 import IForm from "../components/IForm/IForm";
 import { requestLogin } from "../api/auth";
 import { useNavigate } from "react-router-dom";
+import { RootState, useAppSelector } from "../store";
 
 const LoginScreen: React.FC = () => {
+  const isPrerequisiteChecked = React.useRef<boolean>(false);
+  const authState = useAppSelector((state: RootState) => state.auth);
   const toast = useToast();
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -35,6 +38,24 @@ const LoginScreen: React.FC = () => {
       });
     }
   };
+
+  useEffect(() => {
+    if (isPrerequisiteChecked.current) return;
+
+    if (authState.isAuthenticated) {
+      toast({
+        title: "Error",
+        description: "You are already logged in",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+
+      // Go back to previous page
+      navigate(-1);
+    }
+    isPrerequisiteChecked.current = true;
+  }, [authState.isAuthenticated, isPrerequisiteChecked, navigate, toast]);
 
   return (
     <ScreenBase>

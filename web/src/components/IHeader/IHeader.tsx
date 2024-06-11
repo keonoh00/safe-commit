@@ -1,4 +1,4 @@
-import { Avatar, Button, Flex, Image } from "@chakra-ui/react";
+import { Avatar, Button, Flex, Image, useDisclosure } from "@chakra-ui/react";
 
 import { useNavigate } from "react-router-dom";
 import IDrawer from "../IDrawer/IDrawer";
@@ -6,10 +6,12 @@ import { ASSETS } from "../../assets";
 import { PATH } from "../../routes";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
+import { requestLogout } from "../../api/auth";
 
 export default function IHeader() {
   const authState = useSelector((state: RootState) => state.auth);
   const navigate = useNavigate();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const pushToHome = () => {
     navigate("/");
@@ -19,6 +21,11 @@ export default function IHeader() {
   };
   const pushToCreateAccount = () => {
     navigate("/create-account");
+  };
+  const onLogout = async () => {
+    await requestLogout();
+    navigate("/");
+    onClose();
   };
 
   return (
@@ -59,7 +66,22 @@ export default function IHeader() {
             </Button>
           </>
         )}
-        <IDrawer title="Menu">
+        <IDrawer
+          title="Menu"
+          footer={
+            <Button
+              width={"100%"}
+              marginBottom={"4"}
+              colorScheme={"red"}
+              onClick={onLogout}
+            >
+              Logout
+            </Button>
+          }
+          isOpen={isOpen}
+          onOpen={onOpen}
+          onClose={onClose}
+        >
           <Button
             width={"100%"}
             marginBottom={"4"}

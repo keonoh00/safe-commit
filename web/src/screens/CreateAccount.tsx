@@ -9,8 +9,7 @@ import { RootState } from "../store";
 import { createAccountRequest } from "../api/auth";
 
 const CreateAccountScreen: React.FC = () => {
-  const [isPrerequisiteChecked, setIsPrerequisiteChecked] =
-    React.useState(false);
+  const isPrerequisiteChecked = React.useRef<boolean>(false);
   const [name, setName] = React.useState("");
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -19,7 +18,7 @@ const CreateAccountScreen: React.FC = () => {
   const toast = useToast();
 
   useEffect(() => {
-    if (isPrerequisiteChecked) return;
+    if (isPrerequisiteChecked.current) return;
 
     if (authState.isAuthenticated) {
       toast({
@@ -33,7 +32,7 @@ const CreateAccountScreen: React.FC = () => {
       // Go back to previous page
       navigate(-1);
     }
-    setIsPrerequisiteChecked(true);
+    isPrerequisiteChecked.current = true;
   }, [authState.isAuthenticated, isPrerequisiteChecked, navigate, toast]);
 
   const onCreateAccountPress = async () => {

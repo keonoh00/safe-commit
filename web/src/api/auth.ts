@@ -1,7 +1,7 @@
-import { persistor, store } from "../store";
+import store from "../store";
 import {
-  onChangeIsAuthenticated,
   onChangeHashedPassword,
+  onChangeIsAuthenticated,
   onChangeUsername,
 } from "../store/reducer/authReducer";
 
@@ -25,7 +25,6 @@ export const requestLogin = async ({
     if (updateState) {
       store.dispatch(onChangeIsAuthenticated(true));
       store.dispatch(onChangeUsername(username));
-      persistor.persist();
     }
 
     return response.data;
@@ -48,6 +47,12 @@ export const createAccountRequest = async ({
     username,
     password,
   });
+
+  if (response.data.username && response.data.hashedPassword) {
+    store.dispatch(onChangeUsername(response.data.username));
+    store.dispatch(onChangeHashedPassword(response.data.hashedPassword));
+    store.dispatch(onChangeIsAuthenticated(true));
+  }
 
   return response.data;
 };

@@ -36,6 +36,7 @@ const IForm = ({ title, buttonText, inputs, onSubmit }: IFormProps) => {
       {inputs && inputs.length > 0
         ? inputs.map((input) => (
             <Input
+              key={input.placeholder}
               width={"70%"}
               marginBottom={"4"}
               placeholder={input.placeholder}

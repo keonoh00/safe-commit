@@ -4,15 +4,9 @@ import ScreenBase from "./ScreenBase";
 import { useNavigate } from "react-router-dom";
 import ISkeleton from "../components/ISkeleton/ISkeleton";
 import IForm from "../components/IForm/IForm";
-import { useDispatch, useSelector } from "react-redux";
-
+import { useSelector } from "react-redux";
 import { RootState } from "../store";
 import { createAccountRequest } from "../api/auth";
-import {
-  onChangeHashedPassword,
-  onChangeIsAuthenticated,
-  onChangeUsername,
-} from "../store/reducer/authReducer";
 
 const CreateAccountScreen: React.FC = () => {
   const [isPrerequisiteChecked, setIsPrerequisiteChecked] =
@@ -21,9 +15,8 @@ const CreateAccountScreen: React.FC = () => {
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
   const navigate = useNavigate();
-  const authState = useSelector((state: RootState) => state.authState);
+  const authState = useSelector((state: RootState) => state.auth);
   const toast = useToast();
-  const dispatch = useDispatch();
 
   useEffect(() => {
     if (isPrerequisiteChecked) return;
@@ -44,34 +37,30 @@ const CreateAccountScreen: React.FC = () => {
   }, [authState.isAuthenticated, isPrerequisiteChecked, navigate, toast]);
 
   const onCreateAccountPress = async () => {
-    const response = await createAccountRequest({
+    const responseData = await createAccountRequest({
       name,
       username,
       password,
     });
 
-    if (response.username && response.hashedPassword) {
-      dispatch(onChangeUsername(response.username));
-      dispatch(onChangeHashedPassword(response.hashedPassword));
-      dispatch(onChangeIsAuthenticated(true));
-
+    if (responseData.message) {
       toast({
-        title: "Account created",
-        description: "You have successfully created your account",
+        title: "Error",
+        description: responseData.message,
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    } else {
+      toast({
+        title: "Success",
+        description: "Account created successfully!",
         status: "success",
         duration: 3000,
         isClosable: true,
       });
 
       navigate("/");
-    } else if (response.message) {
-      toast({
-        title: "Error",
-        description: response.message,
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
     }
   };
 

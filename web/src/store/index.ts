@@ -1,17 +1,17 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-
-import { persistReducer, persistStore } from "redux-persist";
+import { persistReducer } from "redux-persist";
 import authReducer from "./reducer/authReducer";
-import sessionStorage from "redux-persist/es/storage/session";
+import storage from "redux-persist/lib/storage";
+import { useDispatch, useSelector } from "react-redux";
 
 const persistConfig = {
   key: "root",
-  storage: sessionStorage,
+  version: 1,
+  storage,
   whitelist: ["auth"],
 };
-
 const rootReducer = combineReducers({
-  authState: authReducer,
+  auth: authReducer,
 });
 
 const persistedReducer = persistReducer<ReturnType<typeof rootReducer>>(
@@ -19,7 +19,7 @@ const persistedReducer = persistReducer<ReturnType<typeof rootReducer>>(
   rootReducer
 );
 
-export const store = configureStore({
+const store = configureStore({
   reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
@@ -27,7 +27,9 @@ export const store = configureStore({
     }),
 });
 
-export const persistor = persistStore(store);
-
-export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
+export const useAppDispatch = () => useDispatch();
+export const useAppSelector = useSelector;
+
+export default store;

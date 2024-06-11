@@ -1,7 +1,10 @@
+import bodyParser from "body-parser";
 import { Router } from "express";
 import Database from "../db";
 
 const testRouter = Router();
+
+testRouter.use(bodyParser.json());
 
 testRouter.get("/", async (req, res) => {
   // CVE-2024-21511 Demo
@@ -16,6 +19,11 @@ testRouter.get("/", async (req, res) => {
 
   await Database.connection.query(maliciousPayload);
 
+  res.json({ message: "Hello, World!" });
+});
+
+testRouter.post("/receiver", async (req, res) => {
+  console.log(req.body);
   res.json({ message: "Hello, World!" });
 });
 

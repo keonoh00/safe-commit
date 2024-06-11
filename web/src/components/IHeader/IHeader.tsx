@@ -14,15 +14,15 @@ export default function IHeader() {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const pushToHome = () => {
-    navigate("/");
+    navigate(PATH.HOME);
     onClose();
   };
   const pushToLogin = () => {
-    navigate("/login");
+    navigate(PATH.LOGIN);
     onClose();
   };
   const pushToCreateAccount = () => {
-    navigate("/create-account");
+    navigate(PATH.CREATE_ACCOUNT);
     onClose();
   };
   const onLogout = async () => {
@@ -83,9 +83,9 @@ export default function IHeader() {
               <Button
                 width={"100%"}
                 marginBottom={"4"}
-                onClick={() => navigate(PATH.BOARD)}
+                onClick={() => navigate(PATH.POSTS)}
               >
-                Board
+                Posts
               </Button>
 
               <Button

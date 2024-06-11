@@ -3,9 +3,13 @@ import { RouteObject } from "react-router-dom";
 import CreateAccountScreen from "../screens/CreateAccount";
 import ResetPasswordScreen from "../screens/ResetPassword";
 import ProfileScreen from "../screens/Profile";
-import BoardScreen from "../screens/Board";
+
 import LoginScreen from "../screens/Login";
 import HomeScreen from "../screens/Home";
+import PostsScreen from "../screens/posts/Posts";
+import CreatePostScreen from "../screens/posts/CreatePost";
+import EditPostScreen from "../screens/posts/EditPost";
+import PostDetailScreen from "../screens/posts/PostDetail";
 
 export enum PATH {
   HOME = "/",
@@ -13,7 +17,9 @@ export enum PATH {
   LOGIN = "/login",
   RESET_PASSWORD = "/reset-password",
   PROFILE = "/profile",
-  BOARD = "/board",
+  POSTS = "/posts",
+  CREATE_POST = "/create-post",
+  EDIT_POST = "/edit-post",
 }
 
 export const routes: RouteObject[] = [
@@ -38,7 +44,19 @@ export const routes: RouteObject[] = [
     element: <ProfileScreen />,
   },
   {
-    path: PATH.BOARD,
-    element: <BoardScreen />,
+    path: PATH.POSTS,
+    element: <PostsScreen />,
+  },
+  {
+    path: PATH.POSTS + "/:id",
+    element: <PostDetailScreen />,
+  },
+  {
+    path: PATH.CREATE_POST,
+    element: <CreatePostScreen />,
+  },
+  {
+    path: PATH.EDIT_POST,
+    element: <EditPostScreen />,
   },
 ];

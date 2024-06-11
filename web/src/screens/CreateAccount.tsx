@@ -4,9 +4,15 @@ import ScreenBase from "./ScreenBase";
 import { useNavigate } from "react-router-dom";
 import ISkeleton from "../components/ISkeleton/ISkeleton";
 import IForm from "../components/IForm/IForm";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { RootState } from "../store";
+import { createAccountRequest } from "../api/auth";
+import {
+  onChangeHashedPassword,
+  onChangeIsAuthenticated,
+  onChangeUsername,
+} from "../store/reducer/authReducer";
 
 const CreateAccountScreen: React.FC = () => {
   const [isPrerequisiteChecked, setIsPrerequisiteChecked] =
@@ -17,25 +23,57 @@ const CreateAccountScreen: React.FC = () => {
   const navigate = useNavigate();
   const authState = useSelector((state: RootState) => state.authState);
   const toast = useToast();
+  const dispatch = useDispatch();
 
   useEffect(() => {
+    if (isPrerequisiteChecked) return;
+
     if (authState.isAuthenticated) {
-      if (!toast.isActive) {
-        toast({
-          title: "Error",
-          description: "You are already logged in",
-          status: "error",
-          duration: 3000,
-          isClosable: true,
-        });
-      }
+      toast({
+        title: "Error",
+        description: "You are already logged in",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+
       // Go back to previous page
       navigate(-1);
     }
     setIsPrerequisiteChecked(true);
   }, [authState.isAuthenticated, isPrerequisiteChecked, navigate, toast]);
 
-  const onCreateAccountPress = async () => {};
+  const onCreateAccountPress = async () => {
+    const response = await createAccountRequest({
+      name,
+      username,
+      password,
+    });
+
+    if (response.username && response.hashedPassword) {
+      dispatch(onChangeUsername(response.username));
+      dispatch(onChangeHashedPassword(response.hashedPassword));
+      dispatch(onChangeIsAuthenticated(true));
+
+      toast({
+        title: "Account created",
+        description: "You have successfully created your account",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+
+      navigate("/");
+    } else if (response.message) {
+      toast({
+        title: "Error",
+        description: response.message,
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  };
 
   return (
     <ScreenBase>

@@ -3,7 +3,7 @@ import { Session } from "express-session";
 
 interface ISessionData {
   username?: string;
-  isValid?: boolean;
+  hashedPassword?: string;
 }
 
 export interface IRequest extends Request {

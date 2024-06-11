@@ -6,10 +6,15 @@ import { ASSETS } from "../../assets";
 import { PATH } from "../../routes";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
+import { useEffect } from "react";
 
 export default function IHeader() {
   const authState = useSelector((state: RootState) => state.authState);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    console.log(localStorage.getItem("username"));
+  }, [authState]);
 
   const pushToHome = () => {
     navigate("/");

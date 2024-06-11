@@ -1,4 +1,4 @@
-import { store } from "../store";
+import { persistor, store } from "../store";
 import {
   onChangeIsAuthenticated,
   onChangeHashedPassword,
@@ -25,6 +25,7 @@ export const requestLogin = async ({
     if (updateState) {
       store.dispatch(onChangeIsAuthenticated(true));
       store.dispatch(onChangeUsername(username));
+      persistor.persist();
     }
 
     return response.data;
@@ -48,13 +49,5 @@ export const createAccountRequest = async ({
     password,
   });
 
-  if (response.data.username === username) {
-    store.dispatch(onChangeIsAuthenticated(true));
-    store.dispatch(onChangeUsername(username));
-    store.dispatch(onChangeHashedPassword(response.data.hashedPassword)); // Server returns hashed password
-
-    return response.data;
-  } else {
-    throw new Error("Failed to create account");
-  }
+  return response.data;
 };

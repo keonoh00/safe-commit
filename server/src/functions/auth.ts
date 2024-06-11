@@ -1,29 +1,38 @@
+import { createHash } from "crypto";
 import { DBTable } from "../constants/db";
 import Database from "../db";
+import { User } from "../types/auth";
 
-export const checkUserDB = async (username: string, password: string) => {
-  return await Database.query(
-    `SELECT * FROM ${DBTable.USERS} WHERE username='${username}' AND password='${password}'`,
-  );
+export const getUserByUsername: (username: string) => Promise<User[]> = async (
+  username: string,
+) => {
+  const user = await Database.query(`SELECT * FROM ${DBTable.USERS} WHERE username='${username}'`);
+  return user[0] as unknown as User[];
 };
 
-export const createUserDB = async (
+export const authenticateUser = async (username: string, hashedPassword: string) => {
+  const user = await getUserByUsername(username);
+  const storedHashedPassword = user[0].password;
+  if (user.length === 0) {
+    return false;
+  }
+  return storedHashedPassword === hashedPassword;
+};
+
+export const createUserDB: (
+  legalName: string,
   username: string,
   password: string,
-  isAdmin: boolean = false,
-) => {
-  return await Database.query(
-    // eslint-disable-next-line max-len
-    `INSERT INTO ${DBTable.USERS} (username, password, isAdmin) VALUES ('${username}', '${password}' , '${isAdmin ? 1 : 0}')`,
+) => Promise<User[]> = async (legalName: string, username: string, password: string) => {
+  const passwordAfterHashing = hashPassword(password);
+
+  await Database.query(
+    `INSERT INTO ${DBTable.USERS} (username, password, legalName, isAdmin) VALUES ('${username}', '${passwordAfterHashing}' , '${legalName}', ${0})`,
   );
+
+  return getUserByUsername(username) as unknown as User[];
 };
 
-export const checkUserExistsDB = async (username: string) => {
-  return await Database.query(`SELECT * FROM ${DBTable.USERS} WHERE username='${username}'`);
-};
-
-export const createAnnouncementDB = async (title: string, content: string, author: string) => {
-  return await Database.query(
-    `INSERT INTO ${DBTable.ANNOUNCEMENTS} (title, content, author) VALUES ('${title}', '${content}', '${author}')`,
-  );
+export const hashPassword = (password: string) => {
+  return createHash("sha512").update(password).digest("hex");
 };

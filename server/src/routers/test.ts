@@ -22,9 +22,4 @@ testRouter.get("/", async (req, res) => {
   res.json({ message: "Hello, World!" });
 });
 
-testRouter.post("/receiver", async (req, res) => {
-  console.log(req.body);
-  res.json({ message: "Hello, World!" });
-});
-
 export default testRouter;

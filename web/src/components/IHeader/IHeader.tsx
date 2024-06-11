@@ -15,12 +15,15 @@ export default function IHeader() {
 
   const pushToHome = () => {
     navigate("/");
+    onClose();
   };
   const pushToLogin = () => {
     navigate("/login");
+    onClose();
   };
   const pushToCreateAccount = () => {
     navigate("/create-account");
+    onClose();
   };
   const onLogout = async () => {
     await requestLogout();
@@ -45,7 +48,55 @@ export default function IHeader() {
 
       <Flex alignItems={"center"}>
         {authState.isAuthenticated && authState.username ? (
-          <Avatar mr={2} size={"sm"} name={authState.username} />
+          <>
+            <Avatar mr={2} size={"sm"} name={authState.username} />
+            <IDrawer
+              title="Menu"
+              footer={
+                <Button
+                  width={"100%"}
+                  marginBottom={"4"}
+                  colorScheme={"red"}
+                  onClick={onLogout}
+                >
+                  Logout
+                </Button>
+              }
+              isOpen={isOpen}
+              onOpen={onOpen}
+              onClose={onClose}
+            >
+              <Button
+                width={"100%"}
+                marginBottom={"4"}
+                onClick={() => navigate(PATH.HOME)}
+              >
+                Home
+              </Button>
+              <Button
+                width={"100%"}
+                marginBottom={"4"}
+                onClick={() => navigate(PATH.PROFILE)}
+              >
+                Profile
+              </Button>
+              <Button
+                width={"100%"}
+                marginBottom={"4"}
+                onClick={() => navigate(PATH.BOARD)}
+              >
+                Board
+              </Button>
+
+              <Button
+                width={"100%"}
+                marginBottom={"4"}
+                onClick={() => navigate(PATH.RESET_PASSWORD)}
+              >
+                Reset Password
+              </Button>
+            </IDrawer>
+          </>
         ) : (
           <>
             <Button
@@ -66,51 +117,6 @@ export default function IHeader() {
             </Button>
           </>
         )}
-        <IDrawer
-          title="Menu"
-          footer={
-            <Button
-              width={"100%"}
-              marginBottom={"4"}
-              colorScheme={"red"}
-              onClick={onLogout}
-            >
-              Logout
-            </Button>
-          }
-          isOpen={isOpen}
-          onOpen={onOpen}
-          onClose={onClose}
-        >
-          <Button
-            width={"100%"}
-            marginBottom={"4"}
-            onClick={() => navigate(PATH.HOME)}
-          >
-            Home
-          </Button>
-          <Button
-            width={"100%"}
-            marginBottom={"4"}
-            onClick={() => navigate(PATH.LOGIN)}
-          >
-            Login
-          </Button>
-          <Button
-            width={"100%"}
-            marginBottom={"4"}
-            onClick={() => navigate(PATH.CREATE_ACCOUNT)}
-          >
-            Create Account
-          </Button>
-          <Button
-            width={"100%"}
-            marginBottom={"4"}
-            onClick={() => navigate(PATH.RESET_PASSWORD)}
-          >
-            Reset Password
-          </Button>
-        </IDrawer>
       </Flex>
     </Flex>
   );

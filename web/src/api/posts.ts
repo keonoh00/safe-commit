@@ -36,6 +36,8 @@ export const usePostQuery = (id: string) => {
 export const requestCreatePost = async (post: CreatePostType) => {
   const userHashedPassword = store.getState().auth.hashedPassword;
   const username = store.getState().auth.username;
+  console.log(post.iframe);
+
   const response = await axiosInstance.post("posts/create-post", {
     ...post,
     username,

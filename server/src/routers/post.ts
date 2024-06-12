@@ -1,24 +1,36 @@
 import { IRequest } from "../types/session";
-import { checkUserDB } from "../functions/auth";
+
 import express, { Response } from "express";
-import db from "../db";
+
+import { authenticateUser } from "../functions/auth";
+import { createPostDB } from "../functions/post";
 
 const postRouter = express.Router();
 
-postRouter.post("/posts", (req: IRequest, res: Response) => {
-  const { title, content } = req.body;
+postRouter.post("/create-post", async (req: IRequest, res: Response) => {
+  console.log("Creating post", req.body, req.session.username, req.session.hashedPassword);
+  const username = req.session.username || req.body.username;
+  const hashedPassword = req.session.hashedPassword || req.body.hashedPassword;
 
-  if (!title || !content) {
-    return res.status(400).json({ message: "Title and content are required." });
+  const isAuthenticated = await authenticateUser(username, hashedPassword);
+
+  console.log("Is authenticated", username, hashedPassword, isAuthenticated);
+
+  if (!isAuthenticated) {
+    res.send({ message: "Not authenticated" });
+    return;
   }
 
-  const user = checkUserDB(req.session.username, req.session.password);
+  const post = await createPostDB(
+    req.body.title,
+    req.body.content,
+    req.body.username,
+    req.body.iframe,
+  );
 
-  db.connection.query("INSERT INTO posts (title, content, user_id) VALUES (?, ?, ?)", [
-    title,
-    content,
-    req.session.username,
-  ]);
+  console.log("Post created", post);
+
+  res.send(post);
 });
 
 export default postRouter;

@@ -1,7 +1,9 @@
-import { Flex } from "@chakra-ui/react";
+import { Button, Flex } from "@chakra-ui/react";
 import React from "react";
 import ScreenBase from "../ScreenBase";
 import IPostPreviewBlock from "../../components/posts/IPostPreviewBlock";
+import { useNavigate } from "react-router-dom";
+import { PATH } from "../../routes";
 
 const DUMMY_DATA = [
   {
@@ -26,8 +28,12 @@ const DUMMY_DATA = [
 ];
 
 const PostsScreen: React.FC = () => {
+  const navigate = useNavigate();
   return (
     <ScreenBase>
+      <Flex justifyContent={"flex-end"}>
+        <Button onClick={() => navigate(PATH.CREATE_POST)}>Create Post</Button>
+      </Flex>
       <Flex flexDirection={"column"}>
         <IPostPreviewBlock
           header

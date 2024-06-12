@@ -1,21 +1,17 @@
-import { db } from "../db";
-import { checkUserDB } from "./auth";
+import db from "../db";
 
-export const createPost = async (
+export const createPostDB = async (
   title: string,
   content: string,
   username: string,
-  password: string,
+  iframe: string,
 ) => {
-  if (!title || !content) {
-    throw new Error("Title and content are required.");
-  }
+  const createdDate = new Date().toISOString();
 
-  const user = checkUserDB(username, password);
+  const dbResponse = (await db.connection.query(
+    `INSERT INTO posts (title, content, username, iframe, createdAt) VALUES ('${title}', '${content}', '${username}', '${iframe}', '${createdDate}')`,
+  )) as any;
+  const post = await db.connection.query(`SELECT * FROM posts WHERE id=${dbResponse[0].insertId}`);
 
-  db.connection.query("INSERT INTO posts (title, content, user_id) VALUES (?, ?, ?)", [
-    title,
-    content,
-    username,
-  ]);
+  return post[0][0];
 };

@@ -5,6 +5,7 @@ import cors from "cors";
 import express, { Application } from "express";
 import session, { SessionOptions } from "express-session";
 import testRouter from "./routers/test";
+import postRouter from "./routers/post";
 
 class Server {
   private app: Application;
@@ -40,6 +41,7 @@ class Server {
   private routes() {
     this.app.use("/api/v1/auth", authRouter);
     this.app.use("/api/v1/test", testRouter);
+    this.app.use("/api/v1/posts", postRouter);
   }
 
   public start() {

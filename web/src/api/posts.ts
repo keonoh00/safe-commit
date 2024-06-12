@@ -24,19 +24,14 @@ export const usePostsQuery = () => {
   return { data, refetch };
 };
 
-export const usePostQuery = (id: string) => {
-  const { data, refetch } = useQuery<PostFullType>({
-    queryKey: [QUERY_KEY.POST, id],
-    queryFn: () => axiosInstance.get(`/posts/${id}`).then((res) => res.data),
-  });
-
-  return { data, refetch };
+export const requestPostById = async (id: string) => {
+  const response = await axiosInstance.get(`/posts/${id}`);
+  return response.data;
 };
 
 export const requestCreatePost = async (post: CreatePostType) => {
   const userHashedPassword = store.getState().auth.hashedPassword;
   const username = store.getState().auth.username;
-  console.log(post.iframe);
 
   const response = await axiosInstance.post("posts/create-post", {
     ...post,

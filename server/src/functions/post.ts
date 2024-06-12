@@ -30,3 +30,8 @@ export const createPostDB = async (
 
   return post[0][0];
 };
+
+export const findPostById = async (id: string) => {
+  const post = await db.connection.query(`SELECT * FROM posts WHERE id=${id}`);
+  return post[0][0];
+};

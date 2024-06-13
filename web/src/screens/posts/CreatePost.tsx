@@ -21,7 +21,7 @@ const CreatePostScreen: React.FC = () => {
   const navigate = useNavigate();
 
   const onCreatePost = async () => {
-    if (!title || !content || !iframe) {
+    if (!title || !content) {
       toast({
         title: "Error",
         description: "Please fill all fields",

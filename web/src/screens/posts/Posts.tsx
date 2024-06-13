@@ -1,34 +1,22 @@
 import { Button, Flex } from "@chakra-ui/react";
-import React from "react";
+import React, { useEffect } from "react";
 import ScreenBase from "../ScreenBase";
 import IPostPreviewBlock from "../../components/posts/IPostPreviewBlock";
 import { useNavigate } from "react-router-dom";
 import { PATH } from "../../routes";
-
-const DUMMY_DATA = [
-  {
-    id: 1,
-    title: "First Post",
-    content: "This is the first post",
-    author: "hello",
-  },
-  {
-    id: 2,
-    title: "Second Post",
-    content: "This is the second post",
-    author: "world",
-  },
-  {
-    id: 2,
-    title: "Third Post",
-    content:
-      "Looooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong content here",
-    author: "world",
-  },
-];
+import { PostFullType, requestPosts } from "../../api/posts";
 
 const PostsScreen: React.FC = () => {
+  const [postData, setPostData] = React.useState<PostFullType[]>([]);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const getPosts = async () => {
+      const posts = await requestPosts(0);
+      setPostData(posts);
+    };
+    getPosts();
+  }, []);
   return (
     <ScreenBase>
       <Flex justifyContent={"flex-end"}>
@@ -38,15 +26,19 @@ const PostsScreen: React.FC = () => {
         <IPostPreviewBlock
           header
           post={{
-            id: 0,
+            id: "header",
             title: "Title",
             content: "Content",
-            author: "Author",
+            username: "Author",
+            iframe: "",
+            createdAt: new Date(),
           }}
         />
-        {DUMMY_DATA.map((post) => (
-          <IPostPreviewBlock key={post.id} post={post} />
-        ))}
+        {postData
+          ? postData.map((post) => (
+              <IPostPreviewBlock key={post.id} post={post} />
+            ))
+          : null}
       </Flex>
     </ScreenBase>
   );

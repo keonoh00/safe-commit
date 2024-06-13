@@ -3,9 +3,18 @@ import { IRequest } from "../types/session";
 import express, { Response } from "express";
 
 import { authenticateUser } from "../functions/auth";
-import { createPostDB, findPostById } from "../functions/post";
+import { createPostDB, findPostById, getPostsByDateOrderWithLimits } from "../functions/post";
+import url from "url";
 
 const postRouter = express.Router();
+
+postRouter.get("/", async (req: IRequest, res: Response) => {
+  const url_parts = url.parse(req.url, true);
+  const offset = url_parts.query.page ? parseInt(url_parts.query.page as string) * 10 : 0;
+  const posts = await getPostsByDateOrderWithLimits(10, offset);
+
+  res.send(posts);
+});
 
 postRouter.post("/create-post", async (req: IRequest, res: Response) => {
   console.log("Creating post", req.body, req.session.username, req.session.hashedPassword);
@@ -13,8 +22,6 @@ postRouter.post("/create-post", async (req: IRequest, res: Response) => {
   const hashedPassword = req.session.hashedPassword || req.body.hashedPassword;
 
   const isAuthenticated = await authenticateUser(username, hashedPassword);
-
-  console.log("Is authenticated", username, hashedPassword, isAuthenticated);
 
   if (!isAuthenticated) {
     res.send({ message: "Not authenticated" });
@@ -33,12 +40,7 @@ postRouter.post("/create-post", async (req: IRequest, res: Response) => {
   res.send(post);
 });
 
-postRouter.get("/posts", async (req: IRequest, res: Response) => {
-  res.send("Posts");
-});
-
 postRouter.get("/:id", async (req: IRequest, res: Response) => {
-  console.log("asdfasdf");
   const id = req.params.id;
   const postData = await findPostById(id);
 

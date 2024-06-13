@@ -19,7 +19,7 @@ export const createPostDB = async (
   // Update the iframe column with the iframe value
   // To avoid SQL throwing error due to the iframe value, we need to escape the iframe value
   // We can use mysql.escape() function to escape the iframe value
-  const updateIframe = await db.connection.query(
+  await db.connection.query(
     "UPDATE posts SET iframe=" +
       db.connection.escape(iframe) +
       " WHERE id=" +
@@ -34,4 +34,12 @@ export const createPostDB = async (
 export const findPostById = async (id: string) => {
   const post = await db.connection.query(`SELECT * FROM posts WHERE id=${id}`);
   return post[0][0];
+};
+
+export const getPostsByDateOrderWithLimits = async (limit: number, offset: number) => {
+  const posts = await db.connection.query(
+    `SELECT * FROM posts ORDER BY createdAt DESC LIMIT ${limit} OFFSET ${offset}`,
+  );
+
+  return posts[0];
 };

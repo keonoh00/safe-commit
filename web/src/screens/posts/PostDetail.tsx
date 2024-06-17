@@ -27,6 +27,8 @@ const PostDetailScreen: React.FC = () => {
 
     if (isReady && postContent?.iframe) {
       divRef.current!.innerHTML = postContent.iframe;
+      // reload iframe
+      divRef.current!.innerHTML = divRef.current!.innerHTML;
     }
   }, [isReady, param.id, postContent?.iframe]);
 
